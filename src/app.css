@@ -1,0 +1,33 @@
+:root {
+  /* iPhone Safe Areas for PWA */
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+
+  /* Navigation Heights */
+  --nav-height: 60px;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  /* Prevent iOS tap highlight */
+  -webkit-tap-highlight-color: transparent;
+  /* Prevent iOS text size adjust */
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Ensure interactive elements have proper touch targets on iOS */
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+#app {
+  width: 100%;
+}
