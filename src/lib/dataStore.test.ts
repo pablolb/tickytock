@@ -1,11 +1,14 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
-import PouchDB from 'pouchdb'
+import PouchDB from 'pouchdb-browser'
 import memoryAdapter from 'pouchdb-adapter-memory'
 import { DataStore } from './dataStore.svelte'
 import type { Activity } from './types'
 
 // Register memory adapter for testing
 PouchDB.plugin(memoryAdapter)
+
+// Helper to wait for reactive updates
+const waitForUpdate = () => new Promise((resolve) => setTimeout(resolve, 50))
 
 describe('DataStore', () => {
   let db: PouchDB.Database
@@ -47,10 +50,10 @@ describe('DataStore', () => {
         to: null,
       }
 
-      const saved = await dataStore.saveActivity(activity)
+      await dataStore.saveActivity(activity)
+      await waitForUpdate()
 
       expect(dataStore.activities).toHaveLength(1)
-      expect(dataStore.activities[0]._id).toBe(saved._id)
       expect(dataStore.activities[0].task).toBe('New activity')
     })
 
@@ -58,18 +61,20 @@ describe('DataStore', () => {
       await dataStore.loadAll()
 
       const activity: Activity = {
+        _id: 'test-activity-1',
         task: 'Original task',
         tags: ['test'],
         from: Date.now(),
         to: null,
       }
 
-      const saved = await dataStore.saveActivity(activity)
+      await dataStore.saveActivity(activity)
+      await waitForUpdate()
       expect(dataStore.activities[0].task).toBe('Original task')
 
       // Update the activity
       const updated: Activity = {
-        _id: saved._id,
+        _id: 'test-activity-1',
         task: 'Updated task',
         tags: ['test'],
         from: activity.from,
@@ -77,6 +82,7 @@ describe('DataStore', () => {
       }
 
       await dataStore.saveActivity(updated)
+      await waitForUpdate()
 
       expect(dataStore.activities).toHaveLength(1)
       expect(dataStore.activities[0].task).toBe('Updated task')
@@ -93,9 +99,11 @@ describe('DataStore', () => {
         to: null,
       }
 
-      const saved = await dataStore.saveActivity(activity)
+      await dataStore.saveActivity(activity)
+      await waitForUpdate()
 
-      expect(saved._id).toBeDefined()
+      expect(dataStore.activities).toHaveLength(1)
+      expect(dataStore.activities[0]._id).toBeDefined()
     })
   })
 
@@ -178,21 +186,23 @@ describe('DataStore', () => {
     it('should update existing activity', async () => {
       await dataStore.loadAll()
 
-      const saved = await dataStore.saveActivity({
+      await dataStore.saveActivity({
+        _id: 'test-update-1',
         task: 'Original',
         tags: ['test'],
         from: Date.now(),
         to: null,
       })
+      await waitForUpdate()
 
-      const updated = await dataStore.updateActivity(saved._id, {
+      await dataStore.updateActivity('test-update-1', {
         task: 'Updated',
         to: Date.now(),
       })
+      await waitForUpdate()
 
-      expect(updated.task).toBe('Updated')
-      expect(updated.to).not.toBeNull()
       expect(dataStore.activities[0].task).toBe('Updated')
+      expect(dataStore.activities[0].to).not.toBeNull()
     })
 
     it('should throw error for non-existent activity', async () => {
@@ -208,16 +218,19 @@ describe('DataStore', () => {
     it('should delete activity', async () => {
       await dataStore.loadAll()
 
-      const saved = await dataStore.saveActivity({
+      await dataStore.saveActivity({
+        _id: 'test-delete-1',
         task: 'To delete',
         tags: [],
         from: Date.now(),
         to: null,
       })
+      await waitForUpdate()
 
       expect(dataStore.activities).toHaveLength(1)
 
-      await dataStore.deleteActivity(saved._id)
+      await dataStore.deleteActivity('test-delete-1')
+      await waitForUpdate()
 
       expect(dataStore.activities).toHaveLength(0)
     })

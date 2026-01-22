@@ -1,7 +1,9 @@
 <script lang="ts">
   import type { ActivityDoc } from '../lib/types'
-  import { formatDuration, stopActivity, deleteActivity } from '../lib/activities.svelte'
+  import { formatDuration, getActivityStore } from '../lib/activityStore.svelte'
   import Button from './Button.svelte'
+
+  const activityStore = getActivityStore()
 
   interface Props {
     activity: ActivityDoc
@@ -30,13 +32,13 @@
   })
 
   async function handleStop() {
-    await stopActivity(activity._id)
+    await activityStore.stopActivity(activity._id)
     if (onUpdate) onUpdate()
   }
 
   async function handleDelete() {
     if (confirm('Delete this activity?')) {
-      await deleteActivity(activity._id)
+      await activityStore.deleteActivity(activity._id)
       if (onUpdate) onUpdate()
     }
   }

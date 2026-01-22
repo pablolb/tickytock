@@ -1,15 +1,8 @@
 <script lang="ts">
-  import {
-    createActivity,
-    getAllActivities,
-    getUniqueTasks,
-    getUniqueTags,
-    getTaskToTagsMap,
-    getRunningActivities,
-    stopActivity,
-  } from '../lib/activities.svelte'
-  import { onMount } from 'svelte'
+  import { getActivityStore } from '../lib/activityStore.svelte'
   import Button from './Button.svelte'
+
+  const activityStore = getActivityStore()
 
   interface Props {
     onActivityCreated?: () => void
@@ -20,20 +13,14 @@
 
   let task = $state('')
   let tagsInput = $state('')
-  let uniqueTasks = $state<string[]>([])
-  let uniqueTags = $state<string[]>([])
-  let taskToTags = $state<Map<string, string[]>>(new Map())
 
-  async function loadAutocompleteData() {
-    const activities = await getAllActivities()
-    uniqueTasks = getUniqueTasks(activities)
-    uniqueTags = getUniqueTags(activities)
-    taskToTags = getTaskToTagsMap(activities)
-  }
+  // Reactive getters - auto-update when activities change
+  let uniqueTasks = $derived(activityStore.uniqueTasks)
+  let uniqueTags = $derived(activityStore.uniqueTags)
 
   function handleTaskInput() {
     // Auto-fill tags when task is selected from autocomplete
-    const suggestedTags = taskToTags.get(task)
+    const suggestedTags = activityStore.getTagsForTask(task)
     if (suggestedTags && suggestedTags.length > 0) {
       tagsInput = suggestedTags.join(', ')
     }
@@ -47,21 +34,8 @@
       .map((t) => t.trim())
       .filter((t) => t.length > 0)
 
-    // Capture running activities BEFORE creating new one
-    const runningBeforeCreate = autoStopRunning ? await getRunningActivities() : []
-
-    // Create new activity
-    await createActivity({
-      task: task.trim(),
-      tags,
-      from: Date.now(),
-      to: null,
-    })
-
-    // Stop previously running activities if auto-stop is enabled
-    for (const running of runningBeforeCreate) {
-      await stopActivity(running._id)
-    }
+    // Use the reactive startActivity method which handles auto-stop
+    await activityStore.startActivity(task.trim(), tags, autoStopRunning)
 
     task = ''
     tagsInput = ''
@@ -69,14 +43,7 @@
     if (onActivityCreated) {
       onActivityCreated()
     }
-
-    // Refresh autocomplete data
-    loadAutocompleteData()
   }
-
-  onMount(() => {
-    loadAutocompleteData()
-  })
 </script>
 
 <form

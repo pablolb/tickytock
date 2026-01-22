@@ -1,15 +1,10 @@
 <script lang="ts">
-  import {
-    updateActivity,
-    getAllActivities,
-    getUniqueTasks,
-    getUniqueTags,
-    getTaskToTagsMap,
-  } from '../lib/activities.svelte'
+  import { getActivityStore } from '../lib/activityStore.svelte'
   import { getLocalDateString, getLocalTimeString } from '../lib/dateUtils'
-  import { onMount } from 'svelte'
   import type { ActivityDoc } from '../lib/types'
   import Button from './Button.svelte'
+
+  const activityStore = getActivityStore()
 
   interface Props {
     activity: ActivityDoc
@@ -25,9 +20,10 @@
   let fromTime = $state('')
   let toDate = $state('')
   let toTime = $state('')
-  let uniqueTasks = $state<string[]>([])
-  let uniqueTags = $state<string[]>([])
-  let taskToTags = $state<Map<string, string[]>>(new Map())
+
+  // Reactive getters - auto-update when activities change
+  let uniqueTasks = $derived(activityStore.uniqueTasks)
+  let uniqueTags = $derived(activityStore.uniqueTags)
 
   // Initialize with activity data
   $effect(() => {
@@ -45,16 +41,9 @@
     }
   })
 
-  async function loadAutocompleteData() {
-    const activities = await getAllActivities()
-    uniqueTasks = getUniqueTasks(activities)
-    uniqueTags = getUniqueTags(activities)
-    taskToTags = getTaskToTagsMap(activities)
-  }
-
   function handleTaskInput() {
     // Auto-fill tags when task is selected from autocomplete
-    const suggestedTags = taskToTags.get(task)
+    const suggestedTags = activityStore.getTagsForTask(task)
     if (suggestedTags && suggestedTags.length > 0) {
       tagsInput = suggestedTags.join(', ')
     }
@@ -75,8 +64,7 @@
       toTimestamp = new Date(`${toDate}T${toTime}`).getTime()
     }
 
-    await updateActivity({
-      _id: activity._id,
+    await activityStore.updateActivity(activity._id, {
       task: task.trim(),
       tags,
       from: fromTimestamp,
@@ -86,14 +74,7 @@
     if (onActivityUpdated) {
       onActivityUpdated()
     }
-
-    // Refresh autocomplete data
-    loadAutocompleteData()
   }
-
-  onMount(() => {
-    loadAutocompleteData()
-  })
 </script>
 
 <form

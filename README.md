@@ -17,8 +17,13 @@ This is a work in progress!
 - **Svelte 5** (runes) + TypeScript
 - **PouchDB** for local storage
 - **[@mrbelloc/encrypted-pouch](https://github.com/pablolb/encrypted-pouch)** for encryption
-- **Tabler UI** for components
+- **[Tabler UI](https://tabler.io/)** for components
 - **Vite** for build
+
+## Documentation
+
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Data flow, reactive patterns, and architecture details
+- **[AGENTS.md](./AGENTS.md)** - AI agent guide with patterns, anti-patterns, and Tabler UI usage
 
 ## Development
 
@@ -26,6 +31,17 @@ This is a work in progress!
 npm install
 npm run dev
 ```
+
+## UI Development
+
+This project uses [Tabler UI](https://tabler.io/) - avoid custom CSS/JS unless absolutely necessary.
+
+**Tabler Documentation:**
+
+- [Overview](https://docs.tabler.io/ui)
+- [Components](https://docs.tabler.io/ui/components)
+- [Forms](https://docs.tabler.io/ui/forms)
+- [Layout](https://docs.tabler.io/ui/layout)
 
 ## License
 

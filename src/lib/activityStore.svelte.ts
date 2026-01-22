@@ -429,15 +429,16 @@ export class ActivityStore {
 
   /**
    * Create new activity
+   * Fire-and-forget: UI updates reactively via events
    */
   async createActivity(activity: {
     task: string
     tags: string[]
     from?: number
     to?: number | null
-  }): Promise<ActivityDoc> {
+  }): Promise<void> {
     const dataStore = getDataStore()
-    return dataStore.saveActivity({
+    await dataStore.saveActivity({
       task: activity.task,
       tags: activity.tags,
       from: activity.from || Date.now(),
@@ -448,39 +449,43 @@ export class ActivityStore {
 
   /**
    * Update activity
+   * Fire-and-forget: UI updates reactively via events
    */
   async updateActivity(
     id: string,
     updates: Partial<{ task: string; tags: string[]; from: number; to: number | null }>
-  ): Promise<ActivityDoc> {
+  ): Promise<void> {
     const dataStore = getDataStore()
-    return dataStore.updateActivity(id, updates)
+    await dataStore.updateActivity(id, updates)
   }
 
   /**
    * Delete activity
+   * Fire-and-forget: UI updates reactively via events
    */
   async deleteActivity(id: string): Promise<void> {
     const dataStore = getDataStore()
-    return dataStore.deleteActivity(id)
+    await dataStore.deleteActivity(id)
   }
 
   /**
    * Stop running activity
+   * Fire-and-forget: UI updates reactively via events
    */
-  async stopActivity(id: string): Promise<ActivityDoc> {
+  async stopActivity(id: string): Promise<void> {
     const dataStore = getDataStore()
-    return dataStore.updateActivity(id, { to: Date.now() })
+    await dataStore.updateActivity(id, { to: Date.now() })
   }
 
   /**
    * Start new activity (and optionally auto-stop running ones)
+   * Fire-and-forget: UI updates reactively via events
    */
   async startActivity(
     task: string,
     tags: string[],
     autoStopRunning: boolean = true
-  ): Promise<ActivityDoc> {
+  ): Promise<void> {
     // Auto-stop running activities if enabled
     if (autoStopRunning) {
       const running = this.runningActivities
@@ -490,7 +495,7 @@ export class ActivityStore {
     }
 
     // Create new activity with current timezone
-    return this.createActivity({
+    await this.createActivity({
       task,
       tags,
       from: Date.now(),

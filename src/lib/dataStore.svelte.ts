@@ -180,9 +180,10 @@ export class DataStore {
   }
 
   /**
-   * Save a new or updated activity (async - updates memory + database)
+   * Save a new or updated activity
+   * Fire-and-forget: writes to DB, events will update $state reactively
    */
-  async saveActivity(activity: Activity): Promise<ActivityDoc> {
+  async saveActivity(activity: Activity): Promise<void> {
     const isUpdate = '_id' in activity && activity._id !== undefined
 
     const activityData: Activity = {
@@ -207,33 +208,28 @@ export class DataStore {
         ...activityData,
       })
 
-      // The docsChanged event will update our in-memory state
-      // Return the updated doc from memory
-      return this.getActivityById(doc._id)!
+      // The onChange event will update our in-memory state
     } else {
       // Create new document
-
       // EncryptedPouch will generate ID if not provided
-      const result = await this.store.put('activity', activityData)
+      await this.store.put('activity', activityData)
 
-      // The docsAdded event will update our in-memory state
-      // Return the new doc from memory (after a brief delay to let events fire)
-      await new Promise((resolve) => setTimeout(resolve, 10))
-      return this.getActivityById(result._id)!
+      // The onChange event will update our in-memory state
     }
   }
 
   /**
-   * Update an existing activity (async - updates memory + database)
+   * Update an existing activity
+   * Fire-and-forget: writes to DB, events will update $state reactively
    */
-  async updateActivity(id: string, updates: Partial<Activity>): Promise<ActivityDoc> {
+  async updateActivity(id: string, updates: Partial<Activity>): Promise<void> {
     const existing = this.getActivityById(id)
     if (!existing) {
       throw new Error(`Activity ${id} not found`)
     }
 
     const updated = { ...existing, ...updates }
-    return this.saveActivity(updated)
+    await this.saveActivity(updated)
   }
 
   /**
