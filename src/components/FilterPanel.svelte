@@ -11,7 +11,6 @@
     getAllTimeRange,
     getLocalDateString,
   } from '../lib/dateUtils'
-  import Button from './Button.svelte'
 
   let {
     currentFilter,
@@ -251,8 +250,10 @@
 
     <!-- Action Buttons -->
     <div class="d-grid gap-2 mt-4">
-      <Button variant="primary" type="submit" class="w-100">Apply Filters</Button>
-      <Button variant="secondary" onclick={handleClear} class="w-100">Clear Filters</Button>
+      <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+      <button type="button" class="btn btn-secondary w-100" onclick={handleClear}>
+        Clear Filters
+      </button>
     </div>
   </form>
 </div>

@@ -19,7 +19,6 @@
     IconPlayerPause,
     IconTrash,
   } from '@tabler/icons-svelte'
-  import Button from './Button.svelte'
   const store = getActivityStore()
   const filterStore = getFilterStore()
   const toastStore = getToastStore()
@@ -380,8 +379,12 @@
                 </div>
 
                 <div class="btn-list">
-                  <Button variant="primary" size="sm" onclick={handleSaveEdit}>Save</Button>
-                  <Button variant="secondary" size="sm" onclick={handleCancelEdit}>Cancel</Button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick={handleSaveEdit}>
+                    Save
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick={handleCancelEdit}>
+                    Cancel
+                  </button>
                 </div>
               </div>
             {:else}
@@ -439,40 +442,31 @@
                           : ''}"
                       >
                         {#if activity.to === null}
-                          <a
-                            href="#"
+                          <button
+                            type="button"
                             class="dropdown-item"
-                            onclick={(e) => {
-                              e.preventDefault()
-                              handleStop(activity)
-                            }}
+                            onclick={() => handleStop(activity)}
                           >
                             <IconPlayerPause size={18} class="me-2" />
                             Stop
-                          </a>
+                          </button>
                         {/if}
-                        <a
-                          href="#"
+                        <button
+                          type="button"
                           class="dropdown-item"
-                          onclick={(e) => {
-                            e.preventDefault()
-                            handleEdit(activity)
-                          }}
+                          onclick={() => handleEdit(activity)}
                         >
                           <IconEdit size={18} class="me-2" />
                           Edit
-                        </a>
-                        <a
-                          href="#"
+                        </button>
+                        <button
+                          type="button"
                           class="dropdown-item text-danger"
-                          onclick={(e) => {
-                            e.preventDefault()
-                            handleDelete(activity)
-                          }}
+                          onclick={() => handleDelete(activity)}
                         >
                           <IconTrash size={18} class="me-2" />
                           Delete
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </div>

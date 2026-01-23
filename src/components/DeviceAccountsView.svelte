@@ -1,7 +1,6 @@
 <script lang="ts">
   import { getAccounts } from '../lib/accounts'
   import { push } from 'svelte-spa-router'
-  import Button from './Button.svelte'
   import { IconHourglassEmpty, IconBrandGithub } from '@tabler/icons-svelte'
 
   let accounts = $state(getAccounts())
@@ -56,9 +55,14 @@
     {/if}
 
     <div class="mt-4 pt-3 border-top">
-      <Button variant="primary" size="lg" onclick={handleCreateAccount}>
+      <button
+        type="button"
+        class="btn btn-primary btn-lg w-100"
+        onclick={handleCreateAccount}
+        aria-label="create account"
+      >
         + Create New Account
-      </Button>
+      </button>
     </div>
 
     <div class="text-center mt-4">

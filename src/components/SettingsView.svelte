@@ -12,7 +12,6 @@
   import { getLocalDateString } from '../lib/dateUtils'
   import { getToastStore } from '../lib/toastStore.svelte'
   import PageLayout from './PageLayout.svelte'
-  import Button from './Button.svelte'
   import {
     IconAlertCircle,
     IconAlertTriangle,
@@ -327,10 +326,14 @@
               <div class="text-secondary small">Change color mode, scheme, fonts, and more</div>
             </div>
             <div class="col-auto">
-              <Button variant="primary" size="sm" onclick={() => (showThemeSettings = true)}>
+              <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                onclick={() => (showThemeSettings = true)}
+              >
                 <IconPalette size={18} class="me-1" />
                 Open Theme Settings
-              </Button>
+              </button>
             </div>
           </div>
         </div>
@@ -453,10 +456,10 @@
               </fieldset>
             </div>
 
-            <Button variant="primary" onclick={handleSaveCouchDB}>
+            <button type="button" class="btn btn-primary" onclick={handleSaveCouchDB}>
               <IconCheck size={18} class="me-1" />
               Save CouchDB Settings
-            </Button>
+            </button>
           </div>
         {/if}
       </div>
@@ -478,10 +481,10 @@
               <div class="text-secondary small">Download all activities as JSON</div>
             </div>
             <div class="col-auto">
-              <Button variant="secondary" size="sm" onclick={handleExport}>
+              <button type="button" class="btn btn-secondary btn-sm" onclick={handleExport}>
                 <IconDownload size={18} class="me-1" />
                 Export
-              </Button>
+              </button>
             </div>
           </div>
         </div>
@@ -493,10 +496,10 @@
               <div class="text-secondary small">Import activities from JSON file</div>
             </div>
             <div class="col-auto">
-              <Button variant="secondary" size="sm" onclick={handleImport}>
+              <button type="button" class="btn btn-secondary btn-sm" onclick={handleImport}>
                 <IconUpload size={18} class="me-1" />
                 Import
-              </Button>
+              </button>
             </div>
           </div>
         </div>
@@ -527,10 +530,10 @@
               <div class="text-secondary small">Lock current account and switch</div>
             </div>
             <div class="col-auto">
-              <Button variant="secondary" size="sm" onclick={handleSwitchAccount}>
+              <button type="button" class="btn btn-secondary btn-sm" onclick={handleSwitchAccount}>
                 <IconSwitchHorizontal size={18} class="me-1" />
                 Switch
-              </Button>
+              </button>
             </div>
           </div>
         </div>
@@ -567,10 +570,10 @@
             Permanently delete all activities and settings on this device. Your account will be
             removed from this device. If sync is enabled, remote data will NOT be affected.
           </p>
-          <Button variant="danger" size="sm" onclick={handleDeleteLocalData}>
+          <button type="button" class="btn btn-danger btn-sm" onclick={handleDeleteLocalData}>
             <IconTrash size={18} class="me-1" />
             Delete Local Data
-          </Button>
+          </button>
         </div>
 
         {#if settings?.syncMode === 'couchdb' && settings?.couchdb?.url}
@@ -582,10 +585,14 @@
               Permanently delete all activities and settings from this device AND the remote CouchDB
               server. This will affect all synced devices. THIS CANNOT BE UNDONE.
             </p>
-            <Button variant="danger" size="sm" onclick={handleDeleteLocalAndRemoteData}>
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              onclick={handleDeleteLocalAndRemoteData}
+            >
               <IconTrashX size={18} class="me-1" />
               Delete Local & Remote Data
-            </Button>
+            </button>
           </div>
         {/if}
       </div>

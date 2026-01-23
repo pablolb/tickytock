@@ -1,7 +1,6 @@
 <script lang="ts">
   import { push } from 'svelte-spa-router'
   import { createAccountAndUnlock } from '../lib/auth.svelte'
-  import Button from './Button.svelte'
   import { IconAlertTriangle } from '@tabler/icons-svelte'
 
   let username = $state('')
@@ -40,7 +39,9 @@
 
 <div class="page page-center">
   <div class="container container-tight py-4">
-    <button class="btn btn-link mb-3" onclick={handleBack}>← Back</button>
+    <button class="btn btn-link mb-3" onclick={handleBack} aria-label="Back to accounts">
+      ← Back
+    </button>
 
     <div class="text-center mb-4">
       <h1 class="h2">Create Account</h1>
@@ -59,13 +60,14 @@
           <label class="form-label" for="username">Username</label>
           <input
             id="username"
+            name="username"
             type="text"
             class="form-control"
             bind:value={username}
             placeholder="Enter username"
             autocomplete="username"
-            autofocus
             disabled={loading}
+            aria-required="true"
           />
           <div class="form-text">Letters, numbers, hyphens, and underscores only</div>
         </div>
@@ -74,12 +76,14 @@
           <label class="form-label" for="passphrase">Passphrase</label>
           <input
             id="passphrase"
+            name="passphrase"
             type="password"
             class="form-control"
             bind:value={passphrase}
             placeholder="Enter passphrase"
             autocomplete="new-password"
             disabled={loading}
+            aria-required="true"
           />
           <div class="form-text">Choose a strong passphrase you can remember</div>
         </div>
@@ -88,6 +92,7 @@
           <label class="form-label" for="passphrase-confirm">Confirm Passphrase</label>
           <input
             id="passphrase-confirm"
+            name="confirmPassphrase"
             type="password"
             class="form-control"
             class:is-valid={passphraseConfirm.length > 0 && passphraseMatch}
@@ -96,6 +101,8 @@
             placeholder="Re-enter passphrase"
             autocomplete="new-password"
             disabled={loading}
+            aria-required="true"
+            aria-invalid={passphraseConfirm.length > 0 && !passphraseMatch}
           />
           {#if passphraseConfirm.length > 0}
             {#if passphraseMatch}
@@ -123,20 +130,20 @@
           </div>
         </div>
 
-        <Button variant="primary" size="lg" type="submit" disabled={loading || !canSubmit}>
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg w-100"
+          disabled={loading || !canSubmit}
+          aria-label="Create account"
+        >
           {loading ? 'Creating Account...' : 'Create Account'}
-        </Button>
+        </button>
       </div>
     </form>
   </div>
 </div>
 
 <style>
-  /* Ensure button takes full width */
-  form :global(.btn) {
-    width: 100%;
-  }
-
   /* Show validation feedback */
   .is-valid ~ .valid-feedback,
   .is-invalid ~ .invalid-feedback {

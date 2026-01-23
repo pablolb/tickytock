@@ -29,5 +29,5 @@ dist-ssr
 .env.local
 .env.*.local
 
-# Partykit local dev
-.partykit
+# Test reports
+e2e/reports/

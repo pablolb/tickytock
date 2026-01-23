@@ -2,7 +2,6 @@
   import { push } from 'svelte-spa-router'
   import { unlock } from '../lib/auth.svelte'
   import { accountExists } from '../lib/accounts'
-  import Button from './Button.svelte'
   import type { SyncInfo } from '@mrbelloc/encrypted-pouch'
 
   interface Props {
@@ -113,7 +112,6 @@
             onkeydown={handleKeydown}
             placeholder="Enter your passphrase"
             autocomplete="current-password"
-            autofocus
             disabled={loading}
           />
         </div>
@@ -122,17 +120,14 @@
           <div class="alert alert-danger" role="alert">{error}</div>
         {/if}
 
-        <Button variant="primary" size="lg" type="submit" disabled={loading || !passphrase.trim()}>
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg w-100"
+          disabled={loading || !passphrase.trim()}
+        >
           {loading ? 'Unlocking...' : 'Unlock'}
-        </Button>
+        </button>
       </div>
     </form>
   </div>
 </div>
-
-<style>
-  /* Ensure button takes full width */
-  form :global(.btn) {
-    width: 100%;
-  }
-</style>

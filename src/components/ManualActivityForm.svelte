@@ -1,7 +1,6 @@
 <script lang="ts">
   import { getActivityStore } from '../lib/activityStore.svelte'
   import { getLocalDateString } from '../lib/dateUtils'
-  import Button from './Button.svelte'
 
   const activityStore = getActivityStore()
 
@@ -159,8 +158,8 @@
 
   <div class="card-footer">
     <div class="btn-list justify-content-end">
-      <Button variant="secondary" type="button" onclick={onCancel}>Cancel</Button>
-      <Button variant="primary" type="submit">Add Activity</Button>
+      <button type="button" class="btn btn-secondary" onclick={onCancel}>Cancel</button>
+      <button type="submit" class="btn btn-primary">Add Activity</button>
     </div>
   </div>
 </form>

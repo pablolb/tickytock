@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { ActivityDoc } from '../lib/types'
   import { formatDuration, getActivityStore } from '../lib/activityStore.svelte'
-  import Button from './Button.svelte'
 
   const activityStore = getActivityStore()
 
@@ -14,7 +13,7 @@
   let { activity, onUpdate, onEdit }: Props = $props()
 
   let now = $state(Date.now())
-  let interval: number
+  let interval: ReturnType<typeof setInterval>
 
   $effect(() => {
     if (activity.to === null) {
@@ -79,10 +78,10 @@
     <!-- Actions -->
     <div class="btn-list">
       {#if activity.to === null}
-        <Button variant="warning" size="sm" onclick={handleStop}>Stop</Button>
+        <button type="button" class="btn btn-warning btn-sm" onclick={handleStop}>Stop</button>
       {/if}
-      <Button variant="primary" size="sm" onclick={onEdit}>Edit</Button>
-      <Button variant="danger" size="sm" onclick={handleDelete}>Delete</Button>
+      <button type="button" class="btn btn-primary btn-sm" onclick={onEdit}>Edit</button>
+      <button type="button" class="btn btn-danger btn-sm" onclick={handleDelete}>Delete</button>
     </div>
   </div>
 </div>

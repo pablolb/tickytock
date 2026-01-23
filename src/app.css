@@ -28,6 +28,12 @@ textarea {
   touch-action: manipulation;
 }
 
+/* Accessibility: iOS touch target size (44x44px minimum) */
+.btn,
+.btn-sm {
+  min-height: 44px !important;
+}
+
 #app {
   width: 100%;
 }

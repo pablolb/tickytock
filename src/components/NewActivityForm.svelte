@@ -1,6 +1,5 @@
 <script lang="ts">
   import { getActivityStore } from '../lib/activityStore.svelte'
-  import Button from './Button.svelte'
 
   const activityStore = getActivityStore()
 
@@ -85,7 +84,7 @@
     </datalist>
   </div>
 
-  <Button variant="primary" size="lg" type="submit" class="w-100">Start Activity</Button>
+  <button type="submit" class="btn btn-primary btn-lg w-100">Start Activity</button>
 </form>
 
 <style>

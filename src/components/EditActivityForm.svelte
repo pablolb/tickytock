@@ -2,7 +2,6 @@
   import { getActivityStore } from '../lib/activityStore.svelte'
   import { getLocalDateString, getLocalTimeString } from '../lib/dateUtils'
   import type { ActivityDoc } from '../lib/types'
-  import Button from './Button.svelte'
 
   const activityStore = getActivityStore()
 
@@ -14,8 +13,8 @@
 
   let { activity, onActivityUpdated, onCancel }: Props = $props()
 
-  let task = $state(activity.task)
-  let tagsInput = $state(activity.tags.join(', '))
+  let task = $state('')
+  let tagsInput = $state('')
   let fromDate = $state('')
   let fromTime = $state('')
   let toDate = $state('')
@@ -27,6 +26,9 @@
 
   // Initialize with activity data
   $effect(() => {
+    task = activity.task
+    tagsInput = activity.tags.join(', ')
+
     const fromDateTime = new Date(activity.from)
     fromDate = getLocalDateString(fromDateTime)
     fromTime = getLocalTimeString(fromDateTime)
@@ -173,8 +175,8 @@
 
   <div class="card-footer">
     <div class="btn-list justify-content-end">
-      <Button variant="secondary" type="button" onclick={onCancel}>Cancel</Button>
-      <Button variant="primary" type="submit">Save Changes</Button>
+      <button type="button" class="btn btn-secondary" onclick={onCancel}>Cancel</button>
+      <button type="submit" class="btn btn-primary">Save Changes</button>
     </div>
   </div>
 </form>

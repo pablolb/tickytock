@@ -4,7 +4,6 @@
   import { DEFAULT_THEME } from '../lib/settings'
   import type { ColorScheme, ThemeSettings } from '../lib/settings'
   import Offcanvas from './Offcanvas.svelte'
-  import Button from './Button.svelte'
 
   let {
     show = $bindable(false),
@@ -305,10 +304,10 @@
 
       <!-- Action Buttons -->
       <div class="d-grid gap-2 mt-4">
-        <Button variant="secondary" onclick={handleResetToDefaults} class="w-100"
-          >Reset to defaults</Button
-        >
-        <Button variant="primary" onclick={handleClose} class="w-100">Close</Button>
+        <button type="button" class="btn btn-secondary w-100" onclick={handleResetToDefaults}>
+          Reset to defaults
+        </button>
+        <button type="button" class="btn btn-primary w-100" onclick={handleClose}>Close</button>
       </div>
     </div>
   </div>

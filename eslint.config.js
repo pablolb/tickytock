@@ -7,7 +7,17 @@ import globals from 'globals'
 
 export default [
   {
-    ignores: ['dist/', 'node_modules/', '.svelte-kit/', 'build/', '*.config.*', 'src/lib/encrypted-store/'],
+    ignores: [
+      'dist/',
+      'node_modules/',
+      '.svelte-kit/',
+      'build/',
+      'src/lib/encrypted-store/',
+      'vite.config.ts',
+      'vitest.config.ts',
+      'cucumber.config.cjs',
+      'e2e/reports/**',
+    ],
   },
   js.configs.recommended,
   {
