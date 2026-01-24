@@ -18,6 +18,18 @@
   padding-right: env(safe-area-inset-right, 0px);
 }
 
+/* Reduce top spacing on mobile for better space utilization */
+@media (max-width: 767.98px) {
+  :root {
+    --tblr-page-padding-y: 0.5rem !important;
+  }
+
+  /* Also reduce auth page top padding on mobile */
+  .page-center {
+    padding-top: max(0.5rem, env(safe-area-inset-top, 0px)) !important;
+  }
+}
+
 /* Centered auth pages - base padding + safe area insets */
 .page-center {
   padding-top: max(1rem, env(safe-area-inset-top, 0px)) !important;

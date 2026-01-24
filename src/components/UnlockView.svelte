@@ -73,8 +73,6 @@
 </script>
 
 <AuthLayout>
-  <button class="btn btn-link mb-3" onclick={handleBack}>← Back</button>
-
   <div class="text-center mb-4">
     <h1 class="h2">Unlock Account</h1>
     <p class="text-secondary">Enter your passphrase to continue</p>
@@ -119,14 +117,15 @@
       {#if error}
         <div class="alert alert-danger" role="alert">{error}</div>
       {/if}
+    </div>
 
-      <button
-        type="submit"
-        class="btn btn-primary btn-lg w-100"
-        disabled={loading || !passphrase.trim()}
-      >
-        {loading ? 'Unlocking...' : 'Unlock'}
-      </button>
+    <div class="card-footer">
+      <div class="btn-list justify-content-end">
+        <button type="button" class="btn btn-secondary" onclick={handleBack}> Cancel </button>
+        <button type="submit" class="btn btn-primary" disabled={loading || !passphrase.trim()}>
+          {loading ? 'Unlocking...' : 'Unlock'}
+        </button>
+      </div>
     </div>
   </form>
 </AuthLayout>

@@ -39,10 +39,6 @@
 </script>
 
 <AuthLayout>
-  <button class="btn btn-link mb-3" onclick={handleBack} aria-label="Back to accounts">
-    ← Back
-  </button>
-
   <div class="text-center mb-4">
     <h1 class="h2">Create Account</h1>
     <p class="text-secondary">Choose a username and passphrase</p>
@@ -129,15 +125,20 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <button
-        type="submit"
-        class="btn btn-primary btn-lg w-100"
-        disabled={loading || !canSubmit}
-        aria-label="Create account"
-      >
-        {loading ? 'Creating Account...' : 'Create Account'}
-      </button>
+    <div class="card-footer">
+      <div class="btn-list justify-content-end">
+        <button type="button" class="btn btn-secondary" onclick={handleBack}>Cancel</button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          disabled={loading || !canSubmit}
+          aria-label="Create account"
+        >
+          {loading ? 'Creating Account...' : 'Create Account'}
+        </button>
+      </div>
     </div>
   </form>
 </AuthLayout>
