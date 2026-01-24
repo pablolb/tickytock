@@ -8,8 +8,8 @@
   } = $props()
 </script>
 
-<div class="page-body">
-  <div class="container-xl">
+<div class="page page-center">
+  <div class="container container-tight py-4">
     {#if children}
       {@render children()}
     {/if}

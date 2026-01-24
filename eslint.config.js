@@ -56,6 +56,7 @@ export default [
       },
       globals: {
         ...globals.browser,
+        __BUILD_DATE__: 'readonly',
       },
     },
     plugins: {

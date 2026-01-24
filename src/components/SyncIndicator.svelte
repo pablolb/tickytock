@@ -78,11 +78,13 @@
       return
     }
 
-    // Add animation based on direction
-    if (info.direction === 'push' || info.direction === 'both') {
+    // Add animation based on actual document transfer
+    // Only show push animation if docs were actually written
+    if ((info.direction === 'push' || info.direction === 'both') && docsWritten > 0) {
       animationQueue.push('push')
     }
-    if (info.direction === 'pull' || info.direction === 'both') {
+    // Only show pull animation if docs were actually read
+    if ((info.direction === 'pull' || info.direction === 'both') && docsRead > 0) {
       animationQueue.push('pull')
     }
 

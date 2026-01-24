@@ -5,6 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   define: {
     global: 'globalThis',
+    __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
   },
   optimizeDeps: {
     include: ['pouchdb-browser'],

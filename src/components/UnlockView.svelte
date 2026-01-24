@@ -3,6 +3,7 @@
   import { unlock } from '../lib/auth.svelte'
   import { accountExists } from '../lib/accounts'
   import type { SyncInfo } from '@mrbelloc/encrypted-pouch'
+  import AuthLayout from './AuthLayout.svelte'
 
   interface Props {
     params?: { username?: string }
@@ -71,63 +72,61 @@
   }
 </script>
 
-<div class="page page-center">
-  <div class="container container-tight py-4">
-    <button class="btn btn-link mb-3" onclick={handleBack}>← Back</button>
+<AuthLayout>
+  <button class="btn btn-link mb-3" onclick={handleBack}>← Back</button>
 
-    <div class="text-center mb-4">
-      <h1 class="h2">Unlock Account</h1>
-      <p class="text-secondary">Enter your passphrase to continue</p>
-    </div>
-
-    <form
-      class="card card-md"
-      onsubmit={(e) => {
-        e.preventDefault()
-        handleUnlock()
-      }}
-    >
-      <div class="card-body">
-        <div class="mb-3">
-          <label class="form-label" for="username">Username</label>
-          <input
-            id="username"
-            type="text"
-            class="form-control"
-            value={username}
-            disabled
-            autocomplete="username"
-          />
-          <div class="form-text">For password manager autocomplete</div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="passphrase">Passphrase</label>
-          <input
-            id="passphrase"
-            type="password"
-            class="form-control"
-            bind:value={passphrase}
-            oninput={handlePassphraseInput}
-            onkeydown={handleKeydown}
-            placeholder="Enter your passphrase"
-            autocomplete="current-password"
-            disabled={loading}
-          />
-        </div>
-
-        {#if error}
-          <div class="alert alert-danger" role="alert">{error}</div>
-        {/if}
-
-        <button
-          type="submit"
-          class="btn btn-primary btn-lg w-100"
-          disabled={loading || !passphrase.trim()}
-        >
-          {loading ? 'Unlocking...' : 'Unlock'}
-        </button>
-      </div>
-    </form>
+  <div class="text-center mb-4">
+    <h1 class="h2">Unlock Account</h1>
+    <p class="text-secondary">Enter your passphrase to continue</p>
   </div>
-</div>
+
+  <form
+    class="card card-md"
+    onsubmit={(e) => {
+      e.preventDefault()
+      handleUnlock()
+    }}
+  >
+    <div class="card-body">
+      <div class="mb-3">
+        <label class="form-label" for="username">Username</label>
+        <input
+          id="username"
+          type="text"
+          class="form-control"
+          value={username}
+          disabled
+          autocomplete="username"
+        />
+        <div class="form-text">For password manager autocomplete</div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="passphrase">Passphrase</label>
+        <input
+          id="passphrase"
+          type="password"
+          class="form-control"
+          bind:value={passphrase}
+          oninput={handlePassphraseInput}
+          onkeydown={handleKeydown}
+          placeholder="Enter your passphrase"
+          autocomplete="current-password"
+          disabled={loading}
+        />
+      </div>
+
+      {#if error}
+        <div class="alert alert-danger" role="alert">{error}</div>
+      {/if}
+
+      <button
+        type="submit"
+        class="btn btn-primary btn-lg w-100"
+        disabled={loading || !passphrase.trim()}
+      >
+        {loading ? 'Unlocking...' : 'Unlock'}
+      </button>
+    </div>
+  </form>
+</AuthLayout>
