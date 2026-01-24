@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import PouchDB from 'pouchdb-browser'
 import memoryAdapter from 'pouchdb-adapter-memory'
 import { DataStore } from './dataStore.svelte'
-import type { Activity } from './types'
+import type { Activity, ActivityDoc } from './types'
 
 // Register memory adapter for testing
 PouchDB.plugin(memoryAdapter)
@@ -72,12 +72,14 @@ describe('DataStore', () => {
       await waitForUpdate()
       expect(dataStore.activities[0].task).toBe('Original task')
 
-      // Update the activity
-      const updated: Activity = {
-        _id: 'test-activity-1',
+      // Get the saved activity with its _rev
+      const saved = dataStore.getActivityById('test-activity-1')!
+      expect(saved._rev).toBeDefined()
+
+      // Update the activity with the revision
+      const updated: ActivityDoc = {
+        ...saved,
         task: 'Updated task',
-        tags: ['test'],
-        from: activity.from,
         to: Date.now(),
       }
 
@@ -135,6 +137,9 @@ describe('DataStore', () => {
         from: Date.now(),
         to: null,
       })
+
+      // Wait for reactive state to update after all saves
+      await waitForUpdate()
     })
 
     it('should query activities synchronously', () => {

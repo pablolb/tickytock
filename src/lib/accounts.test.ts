@@ -9,6 +9,17 @@ import {
   getAccountCount,
 } from './accounts'
 
+// Mock PouchDB to avoid adapter errors in tests
+// The actual database deletion is tested in e2e tests
+vi.mock('pouchdb-browser', () => ({
+  default: class MockPouchDB {
+    constructor() {}
+    async destroy() {
+      return Promise.resolve()
+    }
+  },
+}))
+
 describe('Account Management', () => {
   beforeEach(() => {
     localStorage.clear()
@@ -135,12 +146,17 @@ describe('Account Management', () => {
   })
 
   it('handles corrupted localStorage data', () => {
+    // Suppress console.error for this test
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
     // Put invalid JSON in localStorage
     localStorage.setItem('tickytock_accounts', 'invalid json{')
 
     // Should return empty array
     const accounts = getAccounts()
     expect(accounts).toEqual([])
+
+    consoleErrorSpy.mockRestore()
   })
 
   it('creates multiple accounts independently', () => {
