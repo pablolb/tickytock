@@ -9,19 +9,21 @@
   --nav-height: 60px;
 }
 
-/* Global iPhone safe area support for all Tabler pages */
+/* iPhone safe area support for PWA */
+/* Base .page - only safe area insets (for iPhone notch/home indicator) */
 .page {
-  padding-top: max(1rem, env(safe-area-inset-top)) !important;
-  padding-bottom: max(1rem, env(safe-area-inset-bottom)) !important;
-  padding-left: max(0.5rem, env(safe-area-inset-left)) !important;
-  padding-right: max(0.5rem, env(safe-area-inset-right)) !important;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
 }
 
-.page-body {
-  padding-top: max(1rem, env(safe-area-inset-top)) !important;
-  padding-bottom: max(1rem, env(safe-area-inset-bottom)) !important;
-  padding-left: max(1rem, env(safe-area-inset-left)) !important;
-  padding-right: max(1rem, env(safe-area-inset-right)) !important;
+/* Centered auth pages - base padding + safe area insets */
+.page-center {
+  padding-top: max(1rem, env(safe-area-inset-top, 0px)) !important;
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px)) !important;
+  padding-left: max(0.5rem, env(safe-area-inset-left, 0px)) !important;
+  padding-right: max(0.5rem, env(safe-area-inset-right, 0px)) !important;
 }
 
 body {
