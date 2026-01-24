@@ -42,6 +42,43 @@ await page.waitForURL(/pattern/)
 await page.waitForFunction(condition, { timeout: 60000 })
 ```
 
+## Cucumber Hook Timeouts
+
+**✅ DO**: Configure hook timeouts in `e2e/steps/common.steps.ts` for CI reliability
+
+Cucumber hooks have a default 5-second timeout, which is too short for CI environments where operations take longer due to resource constraints.
+
+```typescript
+// BeforeAll: 60s for dev server startup (includes HTTP polling)
+BeforeAll({ timeout: 60000 }, async function () {
+  await startDevServer()
+})
+
+// Before: 30s for browser initialization (first run is slower in CI)
+Before({ timeout: 30000 }, async function (this: TickyTockWorld) {
+  await this.init()
+})
+
+// After: 15s for browser cleanup (usually fast, but timeout for safety)
+After({ timeout: 15000 }, async function (this: TickyTockWorld) {
+  await this.cleanup()
+})
+
+// AfterAll: default timeout is fine (stopping server is fast)
+AfterAll(function () {
+  stopDevServer()
+})
+```
+
+**Why these timeouts?**
+
+- **BeforeAll (60s)**: Starting Vite dev server + HTTP polling to verify it's responding
+- **Before (30s)**: Launching Chromium browser (cold start in CI is slower)
+- **After (15s)**: Closing browser/context (usually <1s, but adding buffer for CI)
+- **AfterAll (default)**: Killing the dev server process is instant
+
+**CI Warmup Issue**: The first scenario in a CI run takes longer because it's a cold start (browser initialization, etc.). Subsequent scenarios are faster.
+
 ## Locator Strategy (Priority Order)
 
 Always prefer accessibility-focused locators:

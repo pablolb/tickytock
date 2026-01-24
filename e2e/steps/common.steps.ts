@@ -2,6 +2,12 @@ import { Before, After, BeforeAll, AfterAll, Given, When, Then } from '@cucumber
 import { TickyTockWorld } from '../support/world.js'
 import { startDevServer, stopDevServer } from '../support/server.js'
 
+// Hook timeout configuration for CI reliability:
+// - BeforeAll: 60s for dev server startup (includes HTTP polling)
+// - Before: 30s for browser initialization (first run is slower in CI)
+// - After: 15s for browser cleanup (usually fast, but timeout for safety)
+// - AfterAll: default (stopping server is fast)
+
 BeforeAll({ timeout: 60000 }, async function () {
   await startDevServer()
 })
@@ -10,11 +16,11 @@ AfterAll(function () {
   stopDevServer()
 })
 
-Before(async function (this: TickyTockWorld) {
+Before({ timeout: 30000 }, async function (this: TickyTockWorld) {
   await this.init()
 })
 
-After(async function (this: TickyTockWorld) {
+After({ timeout: 15000 }, async function (this: TickyTockWorld) {
   await this.cleanup()
 })
 
