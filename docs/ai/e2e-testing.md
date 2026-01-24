@@ -8,6 +8,40 @@
 - **Playwright** - Browser automation and assertions
 - **TypeScript** - Type-safe step definitions
 
+## Global Timeout Configuration
+
+**✅ DO**: Configure timeouts globally in `e2e/support/world.ts`
+
+```typescript
+// In world.ts init() method
+this.page.setDefaultTimeout(30000) // 30s for actions and waits
+this.page.setDefaultNavigationTimeout(30000) // 30s for navigation
+
+// At top of file
+expect.configure({ timeout: 30000 }) // 30s for expect() assertions
+```
+
+This eliminates the need to specify `{ timeout: 5000 }` on every action.
+
+**❌ DON'T**: Add timeout to individual actions
+
+```typescript
+// ❌ BAD - creates noise and maintenance burden
+await expect(button).toBeVisible({ timeout: 5000 })
+await page.waitForURL(/pattern/, { timeout: 5000 })
+
+// ✅ GOOD - uses global timeout
+await expect(button).toBeVisible()
+await page.waitForURL(/pattern/)
+```
+
+**Exception**: Only specify timeout if you need a different value for a specific action:
+
+```typescript
+// OK - this specific operation needs longer
+await page.waitForFunction(condition, { timeout: 60000 })
+```
+
 ## Locator Strategy (Priority Order)
 
 Always prefer accessibility-focused locators:

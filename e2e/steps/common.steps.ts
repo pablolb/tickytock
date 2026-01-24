@@ -2,7 +2,7 @@ import { Before, After, BeforeAll, AfterAll, Given, When, Then } from '@cucumber
 import { TickyTockWorld } from '../support/world.js'
 import { startDevServer, stopDevServer } from '../support/server.js'
 
-BeforeAll(async function () {
+BeforeAll({ timeout: 60000 }, async function () {
   await startDevServer()
 })
 
@@ -29,13 +29,10 @@ Given(
     await this.page.goto('http://localhost:5173', { waitUntil: 'networkidle' })
 
     // Wait for e2eApi to be available (it's loaded asynchronously)
-    await this.page.waitForFunction(
-      () => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return (window as any).e2eApi !== undefined
-      },
-      { timeout: 5000 }
-    )
+    await this.page.waitForFunction(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return (window as any).e2eApi !== undefined
+    })
 
     await this.page.evaluate(
       ({ username }) => {

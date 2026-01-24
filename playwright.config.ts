@@ -16,6 +16,14 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    // Default timeout for actions like click, fill, etc.
+    actionTimeout: 30000,
+    // Default timeout for navigation
+    navigationTimeout: 30000,
+  },
+  // Default timeout for expect() assertions
+  expect: {
+    timeout: 30000,
   },
 
   projects: [

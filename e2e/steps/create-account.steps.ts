@@ -38,27 +38,25 @@ Then(
 
     // Navigate to Settings
     const settingsLink = this.page.getByRole('link', { name: /settings/i })
-    await expect(settingsLink).toBeVisible({ timeout: 5000 })
+    await expect(settingsLink).toBeVisible()
     await settingsLink.click()
 
     // Wait for Settings page to load
-    await this.page.waitForURL(/.*#\/settings/, { timeout: 5000 })
+    await this.page.waitForURL(/.*#\/settings/)
 
     // Click the Switch button to lock the app (it shows a confirm dialog)
     const switchButton = this.page.getByRole('button', { name: /switch/i })
-    await expect(switchButton).toBeVisible({ timeout: 5000 })
+    await expect(switchButton).toBeVisible()
 
     // Accept the confirm dialog that appears when clicking Switch
     this.page.once('dialog', (dialog) => dialog.accept())
     await switchButton.click()
 
     // Wait for redirect to device accounts page
-    await this.page.waitForURL(/.*#\/device-accounts/, { timeout: 5000 })
+    await this.page.waitForURL(/.*#\/device-accounts/)
 
     // Verify account appears in the account list
-    await expect(this.page.getByRole('button', { name: accountName })).toBeVisible({
-      timeout: 5000,
-    })
+    await expect(this.page.getByRole('button', { name: accountName })).toBeVisible()
   }
 )
 

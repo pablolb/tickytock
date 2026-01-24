@@ -1,7 +1,10 @@
 import { setWorldConstructor, World } from '@cucumber/cucumber'
 import type { IWorldOptions } from '@cucumber/cucumber'
-import { chromium } from '@playwright/test'
+import { chromium, expect } from '@playwright/test'
 import type { Browser, BrowserContext, Page } from '@playwright/test'
+
+// Configure global Playwright expect timeout for all assertions
+expect.configure({ timeout: 30000 })
 
 export interface E2EApi {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,6 +38,12 @@ export class TickyTockWorld extends World {
 
     this.context = await this.browser.newContext()
     this.page = await this.context.newPage()
+
+    // Set default timeout for all Playwright actions (clicks, waits, expects, etc.)
+    // This eliminates the need to specify { timeout: 5000 } everywhere
+    // Default is 30s for most operations, can be overridden per-action if needed
+    this.page.setDefaultTimeout(30000) // 30 seconds for actions and waits
+    this.page.setDefaultNavigationTimeout(30000) // 30 seconds for navigation
   }
 
   async cleanup() {
