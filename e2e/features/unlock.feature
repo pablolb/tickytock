@@ -14,6 +14,7 @@ Feature: Unlock App
     Given a user account "Jane" exists with passphrase "test456"
     And I am on the unlock page
     When I click on account "Jane"
+    Then the passphrase field should be focused
     And I type the passphrase "test456"
     And I click the submit button
     Then I should see the main app

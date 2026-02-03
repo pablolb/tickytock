@@ -101,6 +101,7 @@
 
       <div class="mb-3">
         <label class="form-label" for="passphrase">Passphrase</label>
+        <!-- svelte-ignore a11y_autofocus -->
         <input
           id="passphrase"
           type="password"
@@ -111,6 +112,7 @@
           placeholder="Enter your passphrase"
           autocomplete="current-password"
           disabled={loading}
+          autofocus
         />
       </div>
 

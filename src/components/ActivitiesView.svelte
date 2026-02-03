@@ -12,11 +12,13 @@
   import PageLayout from './PageLayout.svelte'
   import FilterPanel from './FilterPanel.svelte'
   import Offcanvas from './Offcanvas.svelte'
+  import ManualActivityForm from './ManualActivityForm.svelte'
   import {
     IconAdjustments,
     IconDotsVertical,
     IconEdit,
     IconPlayerPause,
+    IconPlus,
     IconTrash,
   } from '@tabler/icons-svelte'
   const store = getActivityStore()
@@ -26,6 +28,7 @@
   // State
   let editingActivity = $state<ActivityDoc | null>(null)
   let openDropdownId = $state<string | null>(null)
+  let addingActivity = $state(false)
 
   /**
    * Toggle dropdown for an activity
@@ -253,7 +256,17 @@
       <div class="col">
         <h2 class="page-title">Activities</h2>
       </div>
-      <div class="col-auto">
+      <div class="col-auto d-flex gap-2">
+        <button
+          type="button"
+          class="btn btn-ghost-secondary"
+          onclick={() => {
+            addingActivity = !addingActivity
+          }}
+          aria-label="Add activity"
+        >
+          <IconPlus />
+        </button>
         <button
           type="button"
           class="btn btn-ghost-secondary position-relative"
@@ -289,6 +302,18 @@
       </div>
     </div>
   </div>
+
+  <!-- Add Activity Form -->
+  {#if addingActivity}
+    <ManualActivityForm
+      onActivityCreated={() => {
+        addingActivity = false
+      }}
+      onCancel={() => {
+        addingActivity = false
+      }}
+    />
+  {/if}
 
   <!-- Grouped Activities -->
   {#if groupedActivities.length === 0}
@@ -490,6 +515,11 @@
 </Offcanvas>
 
 <style>
+  /* Allow dropdown menus to escape card boundaries */
+  .list-group-flush {
+    overflow: visible;
+  }
+
   /* Ensure proper touch targets on mobile */
   .btn-icon {
     min-height: 44px;

@@ -1,4 +1,5 @@
 import { Before, After, BeforeAll, AfterAll, Given, When, Then } from '@cucumber/cucumber'
+import { expect } from '@playwright/test'
 import { TickyTockWorld } from '../support/world.js'
 import { startDevServer, stopDevServer } from '../support/server.js'
 
@@ -81,6 +82,11 @@ When('I click the submit button', async function (this: TickyTockWorld) {
 
   const submitButton = this.page.locator('button[type="submit"]').first()
   await submitButton.click()
+})
+
+Then('the passphrase field should be focused', async function (this: TickyTockWorld) {
+  if (!this.page) throw new Error('Page not initialized')
+  await expect(this.page.getByLabel('Passphrase')).toBeFocused()
 })
 
 Then('the app auto-logins and I should see the main app', async function (this: TickyTockWorld) {
