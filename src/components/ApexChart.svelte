@@ -48,27 +48,28 @@
 
   // Watch for options changes and update chart
   $effect(() => {
-    if (chart && options) {
-      chart.updateOptions(
-        {
-          chart: {
-            type,
-            fontFamily: 'inherit',
-            height,
-            parentHeightOffset: 0,
-            toolbar: {
-              show: false,
-            },
-            animations: {
-              enabled: false,
-            },
+    // Access options first to always establish reactive dependency
+    const currentOptions = options
+    if (!chart || !currentOptions) return
+    chart.updateOptions(
+      {
+        chart: {
+          type,
+          fontFamily: 'inherit',
+          height,
+          parentHeightOffset: 0,
+          toolbar: {
+            show: false,
           },
-          ...options,
+          animations: {
+            enabled: false,
+          },
         },
-        true,
-        true
-      )
-    }
+        ...currentOptions,
+      },
+      true,
+      true
+    )
   })
 </script>
 

@@ -30,16 +30,10 @@
   let openDropdownId = $state<string | null>(null)
   let addingActivity = $state(false)
 
-  /**
-   * Toggle dropdown for an activity
-   */
   function toggleDropdown(activityId: string) {
     openDropdownId = openDropdownId === activityId ? null : activityId
   }
 
-  /**
-   * Close dropdown when clicking outside
-   */
   function handleClickOutside(event: MouseEvent) {
     const target = event.target as HTMLElement
     if (!target.closest('.dropdown')) {
@@ -462,9 +456,8 @@
                         <IconDotsVertical />
                       </button>
                       <div
-                        class="dropdown-menu dropdown-menu-end {openDropdownId === activity._id
-                          ? 'show'
-                          : ''}"
+                        class="dropdown-menu dropdown-menu-end"
+                        class:show={openDropdownId === activity._id}
                       >
                         {#if activity.to === null}
                           <button
@@ -524,6 +517,12 @@
   .btn-icon {
     min-height: 44px;
     min-width: 44px;
+  }
+
+  /* Position dropdown-menu-end without Popper.js */
+  .dropdown-menu-end {
+    right: 0;
+    left: auto;
   }
 
   /* Dropdown items with icons */
